@@ -10,7 +10,7 @@
 
 
     typedef struct {
-        char nombre[100];
+        char nombre[33];
         int valor;
         int inicializado;
     } Variable;
