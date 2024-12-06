@@ -10,7 +10,7 @@
 
 
     typedef struct {
-        char nombre[33];
+        char nombre[100];
         int valor;
         int inicializado;
     } Variable;
@@ -189,7 +189,7 @@ void escribir(int** lista){
 }
 
 void yyerror(char *cadena){
-    printf("Error sintactico: '%s'.\n", cadena);
+    printf("Error sintactico: Token inesperado '%s'.\n", yytext);
 }
 
 int yywrap(){

@@ -634,114 +634,84 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 16 "micro.l"
-{
-    return INICIO;
-}
+{ return INICIO; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 19 "micro.l"
-{
-    return FIN;
-}
+#line 17 "micro.l"
+{ return FIN; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 22 "micro.l"
-{
-    return ESCRIBIR;
-}
+#line 18 "micro.l"
+{ return ESCRIBIR; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 25 "micro.l"
-{
-    return LEER;
-}
+#line 19 "micro.l"
+{ return LEER; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 28 "micro.l"
-{ 
-    return ASIGNACION; 
-}
+#line 20 "micro.l"
+{ return ASIGNACION; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 31 "micro.l"
-{
-    yylval.intValor = atoi(yytext); 
-    return CONSTANTE;
-}
+#line 21 "micro.l"
+{ yylval.intValor = atoi(yytext); return CONSTANTE; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 35 "micro.l"
-{
-    yylval.charValor = strdup(yytext);
-    return ID; 
-}
+#line 22 "micro.l"
+{ yylval.charValor = strdup(yytext); return ID; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 39 "micro.l"
-{ 
-    return PUNTOYCOMA; 
-}
+#line 23 "micro.l"
+{ return PUNTOYCOMA; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 42 "micro.l"
-{ 
-    return PARENTIZQ; 
-}
+#line 24 "micro.l"
+{ return PARENTIZQ; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 45 "micro.l"
-{ 
-    return PARENTDER; 
-}
+#line 25 "micro.l"
+{ return PARENTDER; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 48 "micro.l"
-{ 
-    return SUMA; 
-}
+#line 26 "micro.l"
+{ return SUMA; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 51 "micro.l"
-{ 
-    return RESTA; 
-}
+#line 27 "micro.l"
+{ return RESTA; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 54 "micro.l"
-{
-    return COMA;
-}
+#line 28 "micro.l"
+{ return COMA; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 57 "micro.l"
+#line 29 "micro.l"
 { /* Ignora espacios y saltos de lineas */ }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 58 "micro.l"
-{ 
-    printf("Error lexico: Caracter no reconocido: '%s'\n", yytext);
-}
+#line 30 "micro.l"
+{ printf("Error lexico: Token no reconocido: '%s'\n", yytext); exit(0); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 62 "micro.l"
+#line 32 "micro.l"
 ECHO;
 	YY_BREAK
-#line 745 "lex.yy.c"
+#line 715 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1627,4 +1597,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 62 "micro.l"
+#line 32 "micro.l"
+
+
+
