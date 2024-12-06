@@ -1,5 +1,7 @@
 %{
     #include <stdio.h>
+    #include <string.h>
+    #include "y.tab.h"
 %}
 
 %option noyywrap
@@ -27,10 +29,11 @@ CONSTANTE_ENTERA {DIGITO}({DIGITO})*
     return ASIGNACION; 
 }
 {CONSTANTE_ENTERA} {
-    yylval.num = atoi(yytext); 
+    yylval.intValor = atoi(yytext); 
     return CONSTANTE;
 }
-IDENTIFICADOR { 
+{IDENTIFICADOR} {
+    yylval.charValor = strdup(yytext);
     return ID; 
 }
 ";" { 
@@ -51,15 +54,9 @@ IDENTIFICADOR {
 "," {
     return COMA;
 }
-[\t\n]+ { /* Ignora espacios y saltos de lineas */ }
+[ \t\n]+ { /* Ignora espacios y saltos de lineas */ }
 . { 
-    printf("Error léxico: Caracter no reconocido: '%s'\n", yytext);
+    printf("Error lexico: Caracter no reconocido: '%s'\n", yytext);
 }
 
 %%
-
-int main(){
-    printf("Ingrese fuente micro\n");
-    yylex();
-    return 0;
-}
