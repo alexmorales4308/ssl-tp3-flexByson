@@ -93,10 +93,15 @@
     int existeVariable(char *nombre);
     int asignarVariable(char *nombre, int valor);
     int obtenerVariable(char *nombre);
+    
+    char** agregarIdentificador(char** lista, char* item);
+    int** agregarExpresion(int** lista, int item);
+    void leer(char** lista);
+    void escribir(int** lista);
 
 
 /* Line 189 of yacc.c  */
-#line 100 "y.tab.c"
+#line 105 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -161,7 +166,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 27 "micro.y"
+#line 32 "micro.y"
 
     int intValor;
     char* charValor;
@@ -171,7 +176,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 175 "y.tab.c"
+#line 180 "y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -183,7 +188,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 187 "y.tab.c"
+#line 192 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -472,8 +477,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    52,    52,    59,    60,    64,    65,    73,    82,    87,
-      97,   103,   114,   115,   116,   120,   121,   122
+       0,    57,    57,    64,    65,    69,    70,    71,    75,    76,
+      80,    81,    85,    86,    87,    91,    92,    93
 };
 #endif
 
@@ -1390,7 +1395,7 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 52 "micro.y"
+#line 57 "micro.y"
     {
         printf("Programa Micro Finalizado.\n");
         exit(0);
@@ -1400,125 +1405,91 @@ yyreduce:
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 64 "micro.y"
+#line 69 "micro.y"
     { asignarVariable((yyvsp[(1) - (4)].charValor), (yyvsp[(3) - (4)].intValor)); }
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 65 "micro.y"
-    {
-        for(int indice = 0; (yyvsp[(3) - (5)].charArrayValor)[indice] != NULL; indice++){
-            printf("Introduzca valor para: %s\n", (yyvsp[(3) - (5)].charArrayValor)[indice]);
-            int valor;
-            scanf("%d", &valor);
-            asignarVariable((yyvsp[(3) - (5)].charArrayValor)[indice], valor);
-        }
-    }
+#line 70 "micro.y"
+    { leer((yyvsp[(3) - (5)].charArrayValor)); }
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 73 "micro.y"
-    {
-        for(int indice = 0; (yyvsp[(3) - (5)].intArrayValor)[indice] != NULL; indice++){
-            printf("%d ", *(yyvsp[(3) - (5)].intArrayValor)[indice]);
-        }
-        printf("\n");
-    }
+#line 71 "micro.y"
+    { escribir((yyvsp[(3) - (5)].intArrayValor)); }
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 82 "micro.y"
-    {
-        (yyval.charArrayValor) = malloc(2 * sizeof(char*));
-        (yyval.charArrayValor)[0] = (yyvsp[(1) - (1)].charValor);
-        (yyval.charArrayValor)[1] = NULL;
-    }
+#line 75 "micro.y"
+    { (yyval.charArrayValor) = agregarIdentificador(NULL, (yyvsp[(1) - (1)].charValor)); }
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 87 "micro.y"
-    {
-        int longitud;
-        for (longitud = 0; (yyvsp[(1) - (3)].charArrayValor)[longitud] != NULL; longitud++);
-        (yyval.charArrayValor) = realloc((yyvsp[(1) - (3)].charArrayValor), (longitud + 2) * sizeof(char*));
-        (yyval.charArrayValor)[longitud] = (yyvsp[(3) - (3)].charValor);
-        (yyval.charArrayValor)[longitud + 1] = NULL;
-    }
+#line 76 "micro.y"
+    { (yyval.charArrayValor) = agregarIdentificador((yyvsp[(1) - (3)].charArrayValor), (yyvsp[(3) - (3)].charValor)); }
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 97 "micro.y"
-    {
-        (yyval.intArrayValor) = malloc(sizeof(int*));
-        (yyval.intArrayValor)[0] = malloc(sizeof(int));
-        *(yyval.intArrayValor)[0] = (yyvsp[(1) - (1)].intValor);
-        (yyval.intArrayValor)[1] = NULL;
-    }
+#line 80 "micro.y"
+    { (yyval.intArrayValor) = agregarExpresion(NULL, (yyvsp[(1) - (1)].intValor)); }
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 103 "micro.y"
-    { 
-        int longitud;
-        for (longitud = 0; (yyvsp[(1) - (3)].intArrayValor)[longitud] != NULL; longitud++);
-        (yyval.intArrayValor) = realloc((yyvsp[(1) - (3)].intArrayValor), (longitud + 1) * sizeof(int*));
-        (yyval.intArrayValor)[longitud] = malloc(sizeof(int));
-        *(yyval.intArrayValor)[longitud] = (yyvsp[(3) - (3)].intValor);
-        (yyval.intArrayValor)[longitud + 1] = NULL;
-    }
+#line 81 "micro.y"
+    { (yyval.intArrayValor) = agregarExpresion((yyvsp[(1) - (3)].intArrayValor), (yyvsp[(3) - (3)].intValor)); }
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 115 "micro.y"
+#line 86 "micro.y"
     { (yyval.intValor) = (yyvsp[(1) - (3)].intValor) + (yyvsp[(3) - (3)].intValor); }
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 116 "micro.y"
+#line 87 "micro.y"
     { (yyval.intValor) = (yyvsp[(1) - (3)].intValor) - (yyvsp[(3) - (3)].intValor); }
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 120 "micro.y"
+#line 91 "micro.y"
     { (yyval.intValor) = obtenerVariable((yyvsp[(1) - (1)].charValor)); }
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 121 "micro.y"
+#line 92 "micro.y"
     { (yyval.intValor) = (yyvsp[(1) - (1)].intValor); }
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 122 "micro.y"
+#line 93 "micro.y"
     { (yyval.intValor) = (yyvsp[(2) - (3)].intValor); }
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1522 "y.tab.c"
+#line 1493 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1730,7 +1701,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 125 "micro.y"
+#line 96 "micro.y"
 
 
 int existeVariable(char *nombre){
@@ -1777,6 +1748,53 @@ int obtenerVariable(char *nombre){
     }
 
     return tablaDeSimbolos[indice].valor;
+}
+
+char** agregarIdentificador(char** lista, char* item) {
+    int longitud;
+    for (longitud = 0; lista && lista[longitud] != NULL; longitud++);
+
+    if(longitud == 0){
+        lista = malloc(2 * sizeof(char*));
+    }else{
+        lista = realloc(lista, (longitud + 2) * sizeof(char*));
+    }
+
+    lista[longitud] = strdup(item);
+    lista[longitud + 1] = NULL;
+    return lista;
+}
+
+int** agregarExpresion(int** lista, int item){
+    int longitud;
+    for (longitud = 0; lista && lista[longitud] != NULL; longitud++);
+
+    if(longitud == 0){
+        lista = malloc(sizeof(int*));
+    }else{
+        lista = realloc(lista, (longitud + 1) * sizeof(int*));
+    }
+
+    lista[longitud] = malloc(sizeof(int));
+    *lista[longitud] = item;
+    lista[longitud + 1] = NULL;
+    return lista;
+}
+
+void leer(char** lista){
+    for(int indice = 0; lista[indice] != NULL; indice++){
+        printf("Introduzca valor para: %s\n", lista[indice]);
+        int valor;
+        scanf("%d", &valor);
+        asignarVariable(lista[indice], valor);
+    } 
+}
+
+void escribir(int** lista){
+    for(int indice = 0; lista[indice] != NULL; indice++){
+        printf("%d ", *lista[indice]);
+    }
+    printf("\n");
 }
 
 void yyerror(char *cadena){

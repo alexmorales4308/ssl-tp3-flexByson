@@ -22,6 +22,11 @@
     int existeVariable(char *nombre);
     int asignarVariable(char *nombre, int valor);
     int obtenerVariable(char *nombre);
+    
+    char** agregarIdentificador(char** lista, char* item);
+    int** agregarExpresion(int** lista, int item);
+    void leer(char** lista);
+    void escribir(int** lista);
 %}
 
 %union {
@@ -62,52 +67,18 @@ listaSentencias:
 
 sentencia:
     ID ASIGNACION expresion PUNTOYCOMA { asignarVariable($1, $3); }
-    | LEER PARENTIZQ listaIdentificadores PARENTDER PUNTOYCOMA {
-        for(int indice = 0; $3[indice] != NULL; indice++){
-            printf("Introduzca valor para: %s\n", $3[indice]);
-            int valor;
-            scanf("%d", &valor);
-            asignarVariable($3[indice], valor);
-        }
-    }
-    | ESCRIBIR PARENTIZQ listaExpresiones PARENTDER PUNTOYCOMA {
-        for(int indice = 0; $3[indice] != NULL; indice++){
-            printf("%d ", *$3[indice]);
-        }
-        printf("\n");
-    }
+    | LEER PARENTIZQ listaIdentificadores PARENTDER PUNTOYCOMA { leer($3); }
+    | ESCRIBIR PARENTIZQ listaExpresiones PARENTDER PUNTOYCOMA { escribir($3); }
     ;
 
 listaIdentificadores:
-    ID {
-        $$ = malloc(2 * sizeof(char*));
-        $$[0] = $1;
-        $$[1] = NULL;
-    }
-    | listaIdentificadores COMA ID {
-        int longitud;
-        for (longitud = 0; $1[longitud] != NULL; longitud++);
-        $$ = realloc($1, (longitud + 2) * sizeof(char*));
-        $$[longitud] = $3;
-        $$[longitud + 1] = NULL;
-    }
+    ID { $$ = agregarIdentificador(NULL, $1); }
+    | listaIdentificadores COMA ID { $$ = agregarIdentificador($1, $3); }
     ;
 
 listaExpresiones:
-    expresion {
-        $$ = malloc(sizeof(int*));
-        $$[0] = malloc(sizeof(int));
-        *$$[0] = $1;
-        $$[1] = NULL;
-    }
-    | listaExpresiones COMA expresion { 
-        int longitud;
-        for (longitud = 0; $1[longitud] != NULL; longitud++);
-        $$ = realloc($1, (longitud + 1) * sizeof(int*));
-        $$[longitud] = malloc(sizeof(int));
-        *$$[longitud] = $3;
-        $$[longitud + 1] = NULL;
-    }
+    expresion { $$ = agregarExpresion(NULL, $1); }
+    | listaExpresiones COMA expresion { $$ = agregarExpresion($1, $3); }
     ;
 
 expresion:
@@ -168,6 +139,53 @@ int obtenerVariable(char *nombre){
     }
 
     return tablaDeSimbolos[indice].valor;
+}
+
+char** agregarIdentificador(char** lista, char* item) {
+    int longitud;
+    for (longitud = 0; lista && lista[longitud] != NULL; longitud++);
+
+    if(longitud == 0){
+        lista = malloc(2 * sizeof(char*));
+    }else{
+        lista = realloc(lista, (longitud + 2) * sizeof(char*));
+    }
+
+    lista[longitud] = strdup(item);
+    lista[longitud + 1] = NULL;
+    return lista;
+}
+
+int** agregarExpresion(int** lista, int item){
+    int longitud;
+    for (longitud = 0; lista && lista[longitud] != NULL; longitud++);
+
+    if(longitud == 0){
+        lista = malloc(sizeof(int*));
+    }else{
+        lista = realloc(lista, (longitud + 1) * sizeof(int*));
+    }
+
+    lista[longitud] = malloc(sizeof(int));
+    *lista[longitud] = item;
+    lista[longitud + 1] = NULL;
+    return lista;
+}
+
+void leer(char** lista){
+    for(int indice = 0; lista[indice] != NULL; indice++){
+        printf("Introduzca valor para: %s\n", lista[indice]);
+        int valor;
+        scanf("%d", &valor);
+        asignarVariable(lista[indice], valor);
+    } 
+}
+
+void escribir(int** lista){
+    for(int indice = 0; lista[indice] != NULL; indice++){
+        printf("%d ", *lista[indice]);
+    }
+    printf("\n");
 }
 
 void yyerror(char *cadena){
